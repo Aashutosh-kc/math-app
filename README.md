@@ -11,13 +11,15 @@ Working on making polar curves and value display.
 
 # How to run 
 1. Clone the repo 
-``` bash git clone https://github.com/Aashutosh-kc/math-app.git
+```bash
+git clone https://github.com/Aashutosh-kc/math-app.git
 ```
 2. Change directory 
-``` bash cd math-app
+```bash
+cd math-app
 ```
 3. Run it 
 Run this command 
-``` bash 
+```bash 
 npm run dev 
 ```
