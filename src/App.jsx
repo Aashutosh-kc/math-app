@@ -6,7 +6,7 @@ function App(){
   const [topic,setTopic] = useState(null);
   return(
   <>
-    <h1>Math App</h1>
+    <h1>Locus</h1>
     { topic === null && <TopicSelector onSelect={setTopic} />}
     { topic === "polar" && <PolarCoordinates />}
   </>
