@@ -3,7 +3,7 @@ import * as math from "mathjs"
 function PolarCoordinates() {
     const [input,setInput] = useState("");
     const canvasRef = useRef(null);
-
+    const [showResult, setShowResult] = useState(false);
 function plotGrid(){
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -72,6 +72,32 @@ function calculatePoints(){
     }
     return points;
 }
+function torad(deg){
+    const rad = Math.PI/180 * deg;
+    return rad;
+}
+
+const majorAngles = [
+    0,30,45,60,90,
+    120,135,150,180,
+    210,225,240,270,
+    300,315,330,360
+];
+
+const tableData = majorAngles.map((angle) => {
+    try{
+    const r = math.evaluate(input,{theta: torad(angle)});
+    return {
+        angle,
+        r: r.toFixed(3)
+    }}
+    catch{
+        return {
+            angle,
+            r: "error",
+        }
+    }
+});
 
 function plotCurve(){
     const points = calculatePoints();
@@ -98,6 +124,7 @@ function plotCurve(){
        
     } );
     ctx.stroke();
+    setShowResult(true);
 }
 
     
@@ -112,12 +139,33 @@ function plotCurve(){
         />
         <p>You typed: {input}</p>
         <button onClick={() => plotCurve()}>Plot</button>
+        { showResult && <>
+        <h2>r - θ Table</h2>
+        <table>
+        <thead>
+          <tr>
+            <th>θ (degrees)</th>
+            <th>r</th>
+          </tr>
+        </thead>
+        <tbody>
+            {tableData.map(({angle,r},index) =>
+            (<tr key={index}>
+                <td>{angle}</td>
+                <td>{r}</td>
+            </tr>))
+            }
+        </tbody>
+        </table>
+        </>
+}
         <canvas 
         ref={canvasRef}
             height = {500}
             width = {500}
             style={{ border: "1px solid black", display: "block", marginTop: "20px" }}
         />
+        
         </div>
     )
 }
