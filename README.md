@@ -6,6 +6,9 @@ An app containing math related tools like graphs,derivatives,etc for study assis
 - Vite
 - Mathjs
 
+## Live Demo
+[View Live](https://locus-wine.vercel.app/)
+
 # Current Phase 
 Working on making polar curves and value display.
 
