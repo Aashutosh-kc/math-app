@@ -36,6 +36,24 @@ function plotGrid(){
     ctx.lineTo(cx,canvas.width);
     ctx.stroke();
 
+
+    // angle lines
+    const angles = [0,30,45,60,90,120,135,150];
+    ctx.strokeStyle = "#333"
+    ctx.lineWidth = 1
+    angles.forEach((deg)=>{
+        const rad = Math.PI /180 * deg;
+        //for 30,60,...
+        ctx.beginPath();
+        ctx.moveTo(cx,cy);
+        ctx.lineTo(cx + 250 * Math.cos(rad), cy - 250 * Math.sin(rad));
+        ctx.stroke();
+       //for 210,240..
+       ctx.beginPath();
+        ctx.moveTo(cx,cy);
+        ctx.lineTo(cx - 250 * Math.cos(rad), cy + 250 * Math.sin(rad));
+        ctx.stroke();
+    })
 }
 useEffect (() =>
     plotGrid()
