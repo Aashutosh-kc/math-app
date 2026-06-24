@@ -1,5 +1,6 @@
 import { useState,useRef,useEffect } from "react"
 import * as math from "mathjs"
+import './PolarCoordinates.css';
 function PolarCoordinates() {
     const [input,setInput] = useState("");
     const canvasRef = useRef(null);
@@ -108,7 +109,7 @@ function plotCurve(){
     const scale = 50;
     plotGrid();
 
-    ctx.strokeStyle= "#00FF99";
+    ctx.strokeStyle= "#FF6B2B";
     ctx.lineWidth = 2;
     ctx.beginPath();
     points.forEach(({r,theta},index)  => {
@@ -129,43 +130,45 @@ function plotCurve(){
 
     
     return (
-        <div>
-        <h1>Polar Coordinates</h1>
-        <p>Enter your function (use theta for θ)</p>
-        <input type="text" 
-        onChange={(e) => setInput(e.target.value)}
-        placeholder =" e.g. 1 + cos(theta)"
-        value ={input}
-        />
-        <p>You typed: {input}</p>
-        <button onClick={() => plotCurve()}>Plot</button>
-        { showResult && <>
-        <h2>r - θ Table</h2>
-        <table>
-        <thead>
-          <tr>
-            <th>θ (degrees)</th>
-            <th>r</th>
-          </tr>
-        </thead>
-        <tbody>
-            {tableData.map(({angle,r},index) =>
-            (<tr key={index}>
-                <td>{angle}</td>
-                <td>{r}</td>
-            </tr>))
-            }
-        </tbody>
-        </table>
-        </>
-}
-        <canvas 
-        ref={canvasRef}
-            height = {500}
-            width = {500}
-            style={{ border: "1px solid black", display: "block", marginTop: "20px" }}
-        />
-        
+        <div className = "topic">
+            <h1>Polar Coordinates</h1>
+                <p className="instructions">Enter your function (use theta for θ) : </p>
+                <div className="user-input">
+                <input type="text" 
+                onChange={(e) => setInput(e.target.value)}
+                placeholder =" e.g. 1 + cos(theta)"
+                value ={input}
+                />
+                <button className = "plot-button" onClick={() => plotCurve()}>Plot</button>
+            </div>
+            <div className="data">
+            { showResult && <>
+            <table className="polar-table">
+            <caption>r - θ Table</caption>
+            <thead>
+            <tr>
+                <th>θ (degrees)</th>
+                <th>r</th>
+            </tr>
+            </thead>
+            <tbody>
+                {tableData.map(({angle,r},index) =>
+                (<tr key={index}>
+                    <td>{angle}</td>
+                    <td>{r}</td>
+                </tr>))
+                }
+            </tbody>
+            </table>
+            </>
+                }
+            <canvas 
+            ref={canvasRef}
+                height = {500}
+                width = {500}
+                className ="polar-canvas"
+            />
+            </div>
         </div>
     )
 }

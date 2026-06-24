@@ -1,8 +1,12 @@
+import './TopicSelector.css'
 function TopicSelector( { onSelect }){
     return (
-    <div>
+    <div className='topic-container' onClick={() => onSelect("polar")}>
         <h2>Select your topic</h2>
-        <button onClick={() => onSelect("polar")}>Polar Coordinates</button>
+        <div className='card'>
+            <h3>Polar Coordinates</h3>
+            <p>Plot any r = f(theta) curve.</p>
+        </div>
     </div>
     )
 }

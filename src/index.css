@@ -1,0 +1,18 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root{
+--bg:           #ffffff;   /* white background */
+--surface:      #f5f5f5;   /* cards, panels */
+--border:       #e0e0e0;   /* subtle borders */
+--accent:       #FF6B2B;   /* burnt orange */
+--accent-hover: #e55a1f;   /* darker on hover */
+--text:         #1a1a1a;   /* near black text */
+--subtext:      #666666;   /* secondary text */
+}
+body{
+    background-color: var(--bg);
+    min-height: 100vh;
+}

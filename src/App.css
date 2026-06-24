@@ -1,0 +1,6 @@
+.title{
+    background-color: var(--accent);
+    color: var(--surface);
+    padding: 8px;
+    width: auto;
+}

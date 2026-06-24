@@ -1,0 +1,25 @@
+.topic-container{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+}
+.topic-container h2{
+    margin-top: 12px;
+}
+.card{
+    background-color: var(--surface);
+    width: 300px;
+    border: 1px solid var(--border);
+    border-radius: 8px 12px;
+    padding: 8px;
+    cursor: pointer;
+    text-align: center;
+}
+.card:hover{
+    background-color: var(--accent);
+    color: var(--surface);
+    p{
+        color: var(--text);
+    }
+}
