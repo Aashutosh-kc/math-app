@@ -8,6 +8,9 @@
     margin-top: 12px;
 }
 .card{
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
     background-color: var(--surface);
     width: 300px;
     border: 1px solid var(--border);

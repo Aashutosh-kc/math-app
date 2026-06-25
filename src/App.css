@@ -1,6 +1,11 @@
-.title{
+.brand{
+    display: flex;
+    align-items: center;
     background-color: var(--accent);
+    cursor: pointer;
+}
+.title{
     color: var(--surface);
-    padding: 8px;
-    width: auto;
+    padding: 8px 12px;
+    border-radius: 1rem;
 }

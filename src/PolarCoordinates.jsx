@@ -1,6 +1,7 @@
 import { useState,useRef,useEffect } from "react"
 import * as math from "mathjs"
 import './PolarCoordinates.css';
+import { Table,ChartSpline } from 'lucide-react';
 function PolarCoordinates() {
     const [input,setInput] = useState("");
     const canvasRef = useRef(null);
@@ -143,8 +144,12 @@ function plotCurve(){
             </div>
             <div className="data">
             { showResult && <>
+            <div className="table-card">
+             <div className="table-title">
+            < Table size={24} color="#FFFF" strokeWidth={1.5}/>
+             <p>r - θ Table</p>
+             </div>
             <table className="polar-table">
-            <caption>r - θ Table</caption>
             <thead>
             <tr>
                 <th>θ (degrees)</th>
@@ -160,14 +165,22 @@ function plotCurve(){
                 }
             </tbody>
             </table>
+            </div>
             </>
                 }
+
+            <div className="graph">
+            <div className="graph-title">
+                <ChartSpline color="#fff"/>
+                <p>Graph</p>
+            </div>
             <canvas 
             ref={canvasRef}
                 height = {500}
                 width = {500}
                 className ="polar-canvas"
             />
+            </div>
             </div>
         </div>
     )
