@@ -102,6 +102,8 @@ const tableData = majorAngles.map((angle) => {
 });
 
 function plotCurve(){
+    if (input = "")
+        return;
     const points = calculatePoints();
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
