@@ -3,24 +3,34 @@ import * as math from "mathjs"
 import './PolarCoordinates.css';
 import { Table,ChartSpline } from 'lucide-react';
 function PolarCoordinates() {
+
     const [input,setInput] = useState("");
     const canvasRef = useRef(null);
     const [showResult, setShowResult] = useState(false);
-function plotGrid(){
+
+function plotGrid(scale,maxR){
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const cx = canvas.width / 2;
     const cy = canvas.height /2;
-    
+    const lineLength = maxR * scale;
+
     ctx.fillStyle = "#111111";
     ctx.fillRect(0,0,canvas.width,canvas.height);
     
     ctx.strokeStyle = "#333";
     ctx.lineWidth = 1;
-    for(let r = 50; r <= 250; r += 50){
+
+    for(let r = 1; r <= maxR; r += 1){
         ctx.beginPath();
-        ctx.arc(cx,cy,r,0,2*Math.PI);
+        ctx.arc(cx,cy,r*scale,0,2*Math.PI);
         ctx.stroke();  
+    }
+    const step = Math.max(1, Math.ceil(maxR/8));
+    for (let r = step; r <= maxR ; r+= step ){
+        ctx.fillStyle = "#333";
+        ctx.font = "12px sans-serif";
+        ctx.fillText(r.toString(),cx + r * scale + 5, cy -5);
     }
     
 
@@ -48,17 +58,18 @@ function plotGrid(){
         //for 30,60,...
         ctx.beginPath();
         ctx.moveTo(cx,cy);
-        ctx.lineTo(cx + 250 * Math.cos(rad), cy - 250 * Math.sin(rad));
+        ctx.lineTo(cx + lineLength* Math.cos(rad), cy - lineLength * Math.sin(rad));
         ctx.stroke();
        //for 210,240..
        ctx.beginPath();
         ctx.moveTo(cx,cy);
-        ctx.lineTo(cx - 250 * Math.cos(rad), cy + 250 * Math.sin(rad));
+        ctx.lineTo(cx - lineLength * Math.cos(rad), cy + lineLength * Math.sin(rad));
         ctx.stroke();
     })
 }
+
 useEffect (() =>
-    plotGrid()
+    plotGrid(50,5)
     ,[]);
 
 function calculatePoints(){
@@ -74,6 +85,7 @@ function calculatePoints(){
     }
     return points;
 }
+
 function torad(deg){
     const rad = Math.PI/180 * deg;
     return rad;
@@ -109,11 +121,14 @@ function plotCurve(){
     const ctx = canvas.getContext("2d");
     const cx = canvas.width / 2 ;
     const cy = canvas.height/ 2;
-    const scale = 50;
-    plotGrid();
+
+    const maxR = Math.max(...points.map((p)=> Math.abs(p.r)));
+    const scale = 220 / maxR;
+
+    plotGrid(scale,maxR);
 
     ctx.strokeStyle= "#FF6B2B";
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 1;
     ctx.beginPath();
     points.forEach(({r,theta},index)  => {
         
