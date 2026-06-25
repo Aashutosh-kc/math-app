@@ -102,7 +102,7 @@ const tableData = majorAngles.map((angle) => {
 });
 
 function plotCurve(){
-    if (input = "")
+    if (input === "")
         return;
     const points = calculatePoints();
     const canvas = canvasRef.current;
@@ -139,6 +139,12 @@ function plotCurve(){
                 <div className="user-input">
                 <input type="text" 
                 onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                    if(e.key === "Enter"){
+                         plotCurve();
+                         console.log("Enter pressed");
+                    }
+                }}
                 placeholder =" e.g. 1 + cos(theta)"
                 value ={input}
                 />
