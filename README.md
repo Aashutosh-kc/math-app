@@ -1,27 +1,32 @@
 # Locus 
-An app containing math related tools like graphs,derivatives,etc for study assistance.
+A visual math tools website built for engineering students.
 
-## Built with 
-- React
-- Vite
-- Mathjs
+![Preview](./src/assets/preview1.png)
 
 ## Live Demo
 [View Live](https://locus-wine.vercel.app/)
 
-# Current Phase 
-- Polar functions plotter
-- Polar grid with angle lines of (30,45,60,... degrees)
-- User can type any r = f(theta) and plot it live
+## Built with 
+<table>
+    <tr>
+        <td align="center"><img src="https://skillicons.dev/icons?i=react,vite" alt="React + Vite" />
+        <br><sub>React + Vite</sub>
+        </td>
+        <td align="center"><img src="https://mathjs.org/css/img/mathjs.svg" height="48" alt="mathjs" />
+        <br><sub>mathjs</sub>
+        </td>
+    </tr>
+</table>
+
 
 ## Features
-- Topic based math tools
-- Polar curve plotter — type any function like `1 + cos(theta)`
-- Real polar grid with circles and angle lines
+### Polar Coordinates
+- Plot any r = f(θ) curve instantly
+- r-θ table at all major angles (0°, 30°, 45°...360°)
+- Auto-scaled polar grid with angle line
 
 ## Planned Features
-- Proper page design
-- Recognizes cardioid, rose curves, spirals
+- Partial derivative visualizer (3D surface plotter)
 
 # How to run 
 1. Clone the repo 
@@ -33,7 +38,8 @@ git clone https://github.com/Aashutosh-kc/math-app.git
 cd math-app
 ```
 3. Run it 
-Run this command 
+- Run this command 
 ```bash 
+npm install
 npm run dev 
 ```
