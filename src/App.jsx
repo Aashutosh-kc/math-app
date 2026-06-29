@@ -14,6 +14,7 @@ function App(){
     </div>
     { topic === null && <TopicSelector onSelect={setTopic} />}
     { topic === "polar" && <PolarCoordinates />}
+    { topic === "partial" && <div>Coming soon</div>}
   </>
   )
 }
