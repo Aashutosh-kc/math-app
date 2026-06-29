@@ -7,7 +7,7 @@ function PolarCoordinates() {
     const [input,setInput] = useState("");
     const canvasRef = useRef(null);
     const [showResult, setShowResult] = useState(false);
-
+    const [symmetry, setSymmetry] = useState(null);
 function plotGrid(scale,maxR){
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -116,6 +116,7 @@ const tableData = majorAngles.map((angle) => {
 function plotCurve(){
     if (input === "")
         return;
+    setSymmetry(checkSymmetry());
     const points = calculatePoints();
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -145,7 +146,28 @@ function plotCurve(){
     ctx.stroke();
     setShowResult(true);
 }
-
+function checkSymmetry(){
+    //for symmetry about x-axis 
+    const xSymmetry = majorAngles.every((angle) => {
+        const r1 = math.evaluate(input, {theta: torad(angle)})
+        const r2 = math.evaluate(input, {theta: torad(360 - angle)})
+        return Math.abs(r1 - r2) < 0.01;
+    });
+    //for symmetry about y-axis 
+    const ySymmetry = majorAngles.every((angle) => {
+        const r1 = math.evaluate(input, {theta: torad(angle)})
+        const r2 = math.evaluate(input, {theta: torad(180 - angle)})
+        return Math.abs(r1 - r2) < 0.01;
+    })
+    //for symmetry about pole
+    const poleSymmetry = majorAngles.every((angle) => {
+        const r1 = math.evaluate(input, {theta: torad(angle)})
+        const r2 = math.evaluate(input, {theta: torad(180 + angle)})
+        return Math.abs(r1 - r2) < 0.01;
+    })
+    return {xSymmetry,ySymmetry,poleSymmetry};
+    
+}
     
     return (
         <div className = "topic">
@@ -166,31 +188,40 @@ function plotCurve(){
                 <button className = "plot-button" onClick={() => plotCurve()}>Plot</button>
             </div>
             <div className="data">
-            { showResult && <>
-            <div className="table-card">
-             <div className="table-title">
-            < Table size={24} color="#FFFF" strokeWidth={1.5}/>
-             <p>r - θ Table</p>
-             </div>
-            <table className="polar-table">
-            <thead>
-            <tr>
-                <th>θ (degrees)</th>
-                <th>r</th>
-            </tr>
-            </thead>
-            <tbody>
-                {tableData.map(({angle,r},index) =>
-                (<tr key={index}>
-                    <td>{angle}</td>
-                    <td>{r}</td>
-                </tr>))
-                }
-            </tbody>
-            </table>
+            {showResult && 
+            <>
+            
+                <div className="table-card">
+                <div className="table-title">
+                    <Table size={24} color="#FFFF" strokeWidth={1.5}/>
+                    <p>r - θ Table</p>
+                </div>
+                <table className="polar-table">
+                    <thead>
+                        <tr>
+                            <th>θ (degrees)</th>
+                            <th>r</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tableData.map(({angle,r},index) => (
+                            <tr key={index}>
+                                <td>{angle}</td>
+                                <td>{r}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
-            </>
-                }
+
+            <div className="desc-card">
+                <div className="desc-title"><p className="title">Curve Analysis</p></div>
+                <p>X-axis: <span className={symmetry?.xSymmetry ? "sym-yes" : "sym-no"}>{symmetry?.xSymmetry ? "Symmetric" : "Not Symmetric"}</span></p>
+                <p>Y-axis: <span className={symmetry?.ySymmetry ? "sym-yes" : "sym-no"}>{symmetry?.ySymmetry ? "Symmetric" : "Not Symmetric"}</span></p>
+                <p>Pole: <span className={symmetry?.poleSymmetry ? "sym-yes" : "sym-no"}>{symmetry?.poleSymmetry ? "Symmetric" : "Not Symmetric"}</span></p>
+            </div>
+        
+        </>}
 
             <div className="graph">
             <div className="graph-title">
