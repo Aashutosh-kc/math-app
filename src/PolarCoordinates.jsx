@@ -1,7 +1,7 @@
 import { useState,useRef,useEffect } from "react"
 import * as math from "mathjs"
 import './PolarCoordinates.css';
-import { Table,ChartSpline } from 'lucide-react';
+import { Table,ChartSpline,ChartPie, PieChart } from 'lucide-react';
 function PolarCoordinates() {
 
     const [input,setInput] = useState("");
@@ -215,7 +215,7 @@ function checkSymmetry(){
             </div>
 
             <div className="desc-card">
-                <div className="desc-title"><p className="title">Curve Analysis</p></div>
+                <div className="desc-title"><PieChart size={24} color="#ffff"/><p className="title">Curve Analysis</p></div>
                 <p>X-axis: <span className={symmetry?.xSymmetry ? "sym-yes" : "sym-no"}>{symmetry?.xSymmetry ? "Symmetric" : "Not Symmetric"}</span></p>
                 <p>Y-axis: <span className={symmetry?.ySymmetry ? "sym-yes" : "sym-no"}>{symmetry?.ySymmetry ? "Symmetric" : "Not Symmetric"}</span></p>
                 <p>Pole: <span className={symmetry?.poleSymmetry ? "sym-yes" : "sym-no"}>{symmetry?.poleSymmetry ? "Symmetric" : "Not Symmetric"}</span></p>
