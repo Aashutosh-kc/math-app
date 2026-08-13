@@ -8,6 +8,7 @@ function PolarCoordinates() {
     const canvasRef = useRef(null);
     const [showResult, setShowResult] = useState(false);
     const [symmetry, setSymmetry] = useState(null);
+    const [plottedEquation, setPlottedEquation] = useState("");
 function plotGrid(scale,maxR){
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -145,6 +146,7 @@ function plotCurve(){
     } );
     ctx.stroke();
     setShowResult(true);
+    setPlottedEquation(input);
 }
 function checkSymmetry(){
     //for symmetry about x-axis 
@@ -223,7 +225,7 @@ function checkSymmetry(){
         
         </>}
 
-            <div className="graph">
+<div className="graph">
             <div className="graph-title">
                 <ChartSpline color="#fff"/>
                 <p>Graph</p>
@@ -234,6 +236,7 @@ function checkSymmetry(){
                 width = {500}
                 className ="polar-canvas"
             />
+            {plottedEquation && <p className="graph-equation">r = {plottedEquation}</p>}
             </div>
             </div>
         </div>

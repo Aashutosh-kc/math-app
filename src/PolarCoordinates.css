@@ -119,6 +119,18 @@
     padding: 8px;
 }
 
+.graph-equation{
+    margin: 0;
+    padding: 8px 12px;
+    font-size: 15px;
+    font-family: monospace;
+    text-align: center;
+    color: #fff;
+    background-color: var(--accent);
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    box-sizing: border-box;
+}
 
 .desc-card{
     border: 1px solid var(--accent);
