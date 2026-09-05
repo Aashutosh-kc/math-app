@@ -124,7 +124,8 @@ function plotCurve(){
     const cx = canvas.width / 2 ;
     const cy = canvas.height/ 2;
 
-    const maxR = Math.max(...points.map((p)=> Math.abs(p.r)));
+    const rawMaxR = Math.max(...points.map((p)=> Math.abs(p.r)));
+    const maxR = Math.ceil(rawMaxR);
     const scale = 220 / maxR;
 
     plotGrid(scale,maxR);
