@@ -1,14 +1,15 @@
-import { useState,useRef,useEffect } from "react"
+import { useState,useRef,useEffect, useMemo } from "react"
 import * as math from "mathjs"
 import './PolarCoordinates.css';
 import { Table,ChartSpline,ChartPie, PieChart } from 'lucide-react';
-function PolarCoordinates() {
+export default function PolarCoordinates() {
 
     const [input,setInput] = useState("");
     const canvasRef = useRef(null);
     const [showResult, setShowResult] = useState(false);
     const [symmetry, setSymmetry] = useState(null);
     const [plottedEquation, setPlottedEquation] = useState("");
+
 function plotGrid(scale,maxR){
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -73,11 +74,11 @@ useEffect (() =>
     plotGrid(50,5)
     ,[]);
 
-function calculatePoints(){
-    const points = [];
+    const allpoints = useMemo(()=>{
+        const points = [];
     for (let theta= 0; theta <= 2 * Math.PI; theta += 0.01){
         try{
-        const r = math.evaluate(input,{theta: theta});
+        const r = math.evaluate(plottedEquation,{theta: theta});
         points.push({r,theta});
         }
         catch{
@@ -85,7 +86,38 @@ function calculatePoints(){
         }
     }
     return points;
-}
+    },[plottedEquation])
+
+    useEffect(()=>{
+        if (plottedEquation === "") return;
+
+        const points = allpoints;
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+
+        const rawMaxR = Math.max(...points.map((p) => Math.abs(p.r)));
+        const maxR = Math.ceil(rawMaxR);
+        const scale = 220 / maxR;
+
+        plotGrid(scale, maxR);
+
+        ctx.strokeStyle = "#FF6B2B";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        points.forEach(({ r, theta }, index) => {
+            const x = cx + r * Math.cos(theta) * scale;
+            const y = cy - r * Math.sin(theta) * scale;
+            if (index === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        });
+        ctx.stroke();
+        setShowResult(true);
+    },[allpoints])
 
 function torad(deg){
     const rad = Math.PI/180 * deg;
@@ -118,55 +150,41 @@ function plotCurve(){
     if (input === "")
         return;
     setSymmetry(checkSymmetry());
-    const points = calculatePoints();
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    const cx = canvas.width / 2 ;
-    const cy = canvas.height/ 2;
-
-    const rawMaxR = Math.max(...points.map((p)=> Math.abs(p.r)));
-    const maxR = Math.ceil(rawMaxR);
-    const scale = 220 / maxR;
-
-    plotGrid(scale,maxR);
-
-    ctx.strokeStyle= "#FF6B2B";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    points.forEach(({r,theta},index)  => {
-        
-        const x = cx + r * Math.cos(theta)*scale;
-        const y = cy - r * Math.sin(theta)*scale;
-        if (index === 0 ) {
-            ctx.moveTo(x,y);
-        }
-        else{
-            ctx.lineTo(x,y);
-        }
-       
-    } );
-    ctx.stroke();
-    setShowResult(true);
     setPlottedEquation(input);
 }
 function checkSymmetry(){
     //for symmetry about x-axis 
     const xSymmetry = majorAngles.every((angle) => {
-        const r1 = math.evaluate(input, {theta: torad(angle)})
-        const r2 = math.evaluate(input, {theta: torad(360 - angle)})
-        return Math.abs(r1 - r2) < 0.01;
+        try{
+            const r1 = math.evaluate(input, {theta: torad(angle)})
+            const r2 = math.evaluate(input, {theta: torad(360 - angle)})
+            return Math.abs(r1 - r2) < 0.01;
+        }
+        catch{
+            return false;
+        }
     });
     //for symmetry about y-axis 
     const ySymmetry = majorAngles.every((angle) => {
-        const r1 = math.evaluate(input, {theta: torad(angle)})
-        const r2 = math.evaluate(input, {theta: torad(180 - angle)})
-        return Math.abs(r1 - r2) < 0.01;
+        try{
+            const r1 = math.evaluate(input, {theta: torad(angle)})
+            const r2 = math.evaluate(input, {theta: torad(180 - angle)})
+            return Math.abs(r1 - r2) < 0.01;
+        }
+        catch{
+            return false;
+        }
     })
     //for symmetry about pole
     const poleSymmetry = majorAngles.every((angle) => {
-        const r1 = math.evaluate(input, {theta: torad(angle)})
-        const r2 = math.evaluate(input, {theta: torad(180 + angle)})
-        return Math.abs(r1 - r2) < 0.01;
+        try{
+            const r1 = math.evaluate(input, {theta: torad(angle)})
+            const r2 = math.evaluate(input, {theta: torad(180 + angle)})
+            return Math.abs(r1 - r2) < 0.01;
+        }
+        catch{
+            return false;
+        }
     })
     return {xSymmetry,ySymmetry,poleSymmetry};
     
@@ -243,4 +261,3 @@ function checkSymmetry(){
         </div>
     )
 }
-export default PolarCoordinates
