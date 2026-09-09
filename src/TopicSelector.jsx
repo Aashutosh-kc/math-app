@@ -1,5 +1,5 @@
 import './TopicSelector.css'
-import {SquareFunction,Box} from 'lucide-react';
+import {SquareFunction,Box,Calculator} from 'lucide-react';
 function TopicSelector( { onSelect }){
     return (
 <div className='topic-container'>
@@ -11,6 +11,13 @@ function TopicSelector( { onSelect }){
         <p>Plot any r = f(theta) curve.</p>
         </div>
     </div>
+    <div className='card working' onClick={() => onSelect("calculator")}>
+            <Calculator size={36} color="#FF6B2B" />
+            <div className='topic-preview'>
+                <h3>Calculator</h3>
+                <p>Basic Scientific Calculator</p>
+            </div>
+        </div>
         <div className='card coming-soon'>
             <Box size={36} color="#FF6B2B" />
             <div className='topic-preview'>
