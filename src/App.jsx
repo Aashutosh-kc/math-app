@@ -1,6 +1,7 @@
 import { useState } from "react"
 import TopicSelector from "./TopicSelector"
-import PolarCoordinates from "./PolarCoordinates"
+import PolarCoordinates from "./components/PolarCoordinates/PolarCoordinates"
+import Calculator from "./components/Calculator/Calculator"
 import './App.css'
 import { PencilRuler} from 'lucide-react'
 
