@@ -1,7 +1,7 @@
 import { useState } from "react"
 import TopicSelector from "./TopicSelector"
 import PolarCoordinates from "./components/PolarCoordinates/PolarCoordinates"
-import Calculator from "./components/Calculator/Calculator"
+import SimpCalculator from "./components/Calculator/Calculator"
 import './App.css'
 import { PencilRuler} from 'lucide-react'
 
@@ -13,10 +13,12 @@ function App(){
       < PencilRuler size ={36} color ="#FFFF" />
       <h1 className="title">Locus</h1>
     </div>
+    <div className="topic">
     { topic === null && <TopicSelector onSelect={setTopic} />}
     { topic === "polar" && <PolarCoordinates />}
-    { topic === "calculator" && <Calculator />}
+    { topic === "calculator" && <SimpCalculator />}
     { topic === "partial" && <div>Coming soon</div>}
+    </div>
   </>
   )
 }
