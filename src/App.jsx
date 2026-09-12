@@ -1,25 +1,81 @@
-import { useState } from "react"
-import TopicSelector from "./TopicSelector"
-import PolarCoordinates from "./components/PolarCoordinates/PolarCoordinates"
-import SimpCalculator from "./components/Calculator/Calculator"
-import './App.css'
-import { PencilRuler} from 'lucide-react'
+import { useState } from "react";
 
-function App(){
-  const [topic,setTopic] = useState(null);
-  return(
-  <>
-    <div className="brand" onClick={() => setTopic(null)}>
-      < PencilRuler size ={36} color ="#FFFF" />
-      <h1 className="title">Locus</h1>
-    </div>
-    <div className="topic">
-    { topic === null && <TopicSelector onSelect={setTopic} />}
-    { topic === "polar" && <PolarCoordinates />}
-    { topic === "calculator" && <SimpCalculator />}
-    { topic === "partial" && <div>Coming soon</div>}
-    </div>
-  </>
-  )
+import { PencilRuler, MoveUpRight } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
+
+import TopicSelector from "./TopicSelector";
+import PolarCoordinates from "./components/PolarCoordinates/PolarCoordinates";
+import SimpCalculator from "./components/Calculator/Calculator";
+
+import "./App.css";
+
+function App() {
+    const [topic, setTopic] = useState(null);
+
+    return (
+        <>
+            <header className="nav-bar">
+
+                <button
+                    className="brand"
+                    onClick={() => setTopic(null)}
+                    aria-label="Go to Locus home"
+                >
+                    <span className="brand-icon">
+                        <PencilRuler
+                            size={21}
+                            strokeWidth={2.2}
+                        />
+                    </span>
+
+                    <span className="title">
+                        Locus
+                    </span>
+                </button>
+
+
+                <a
+                    className="github-link"
+                    href="https://github.com/Aashutosh-kc/math-app"
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    <FaGithub size={19} />
+
+                    <span>GitHub</span>
+
+                    <MoveUpRight
+                        size={15}
+                        strokeWidth={2}
+                    />
+                </a>
+
+            </header>
+
+
+            <main className="topic">
+
+                {topic === null && (
+                    <TopicSelector onSelect={setTopic} />
+                )}
+
+                {topic === "polar" && (
+                    <PolarCoordinates />
+                )}
+
+                {topic === "calculator" && (
+                    <SimpCalculator />
+                )}
+
+                {topic === "partial" && (
+                    <div className="coming-soon">
+                        Coming soon
+                    </div>
+                )}
+
+            </main>
+        </>
+    );
 }
-export default App
+
+export default App;

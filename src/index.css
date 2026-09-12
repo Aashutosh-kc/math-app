@@ -1,18 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-:root{
---bg:           #ffffff;   /* white background */
---surface:      #f5f5f5;   /* cards, panels */
---border:       #e0e0e0;   /* subtle borders */
---accent:       #FF6B2B;   /* burnt orange */
---accent-hover: #e55a1f;   /* darker on hover */
---text:         #1a1a1a;   /* near black text */
---subtext:      #666666;   /* secondary text */
+:root {
+    /* Backgrounds */
+    --bg: #f7f7f4;
+    --surface: #ffffff;
+    --surface-soft: #eeeeea;
+
+    /* Borders */
+    --border: #deded8;
+    --border-strong: #c9c9c2;
+
+    /* Text */
+    --text: #171717;
+    --text-secondary: #666660;
+    --text-muted: #999991;
+
+    /* Accent */
+    --accent: #ff6b2b;
+    --accent-hover: #e9581d;
+
+    /* Dark surfaces */
+    --dark: #111111;
+    --dark-soft: #191919;
+
+    /* Feedback */
+    --success: #2e8b57;
+    --danger: #d94a45;
 }
 body{
     background-color: var(--bg);
     min-height: 100vh;
+    font-family: "Manrope", sans-serif;
 }
