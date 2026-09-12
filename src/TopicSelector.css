@@ -1,32 +1,103 @@
 .topic-container{
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
     align-items: center;
+    width: min(900px, 90vw);
 }
 .topic-container h2{
     margin-top: 12px;
+    align-self: flex-start;
 }
+
+.card-grid{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+}
+
 .card{
     display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    background-color: var(--surface);
-    width: 300px;
+    flex-direction: column;
+    flex: 1;
+    background-color: #fff;
     border: 1px solid var(--border);
-    border-radius: 8px 12px;
-    padding: 8px;
+    border-radius: 16px;
+    overflow: hidden;
     cursor: pointer;
-    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .card:hover{
-    background-color: var(--accent);
-    color: var(--surface);
-    p{
-        color: var(--text);
-    }
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
+
+.card-preview{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    background: linear-gradient(160deg, #fff3ec, #ffe0d1);
+    color: var(--accent);
+}
+
+.card-body{
+    padding: 16px 20px 20px;
+    text-align: left;
+}
+
+.card-index{
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+.card-body h3{
+    margin: 4px 0 6px;
+    font-size: 20px;
+}
+
+.card-body p{
+    margin: 0 0 12px;
+    color: var(--subtext);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.card-cta{
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: var(--text);
+}
+
+.card-cta:hover{
+    color: var(--accent);
+}
+
 .coming-soon{
-    opacity: 0.5;
+    opacity: 0.55;
     cursor: not-allowed;
+}
+.coming-soon:hover{
+    transform: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.coming-soon .card-cta{
+    color: var(--subtext);
+}
+
+@media (max-width: 899px){
+    .topic-container{
+        width: min(360px, 90vw);
+    }
+    .card-grid{
+        flex-direction: column;
+    }
 }

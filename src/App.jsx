@@ -59,15 +59,15 @@ function App() {
                     <TopicSelector onSelect={setTopic} />
                 )}
 
-                {topic === "polar" && (
+                {topic === "Polar Coordinates" && (
                     <PolarCoordinates />
                 )}
 
-                {topic === "calculator" && (
+                {topic === "Calculator" && (
                     <SimpCalculator />
                 )}
 
-                {topic === "partial" && (
+                {topic === "Partial Derivatives" && (
                     <div className="coming-soon">
                         Coming soon
                     </div>
