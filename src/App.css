@@ -57,9 +57,12 @@
     background-color: var(--surface-soft);
 }
 
-.topic {
+.page-content{
     width: 100%;
     min-height: calc(100vh - 72px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .coming-soon {
@@ -69,4 +72,11 @@
     justify-content: center;
     color: var(--text-secondary);
     font-size: 1rem;
+}
+
+@media (max-width: 600px){
+    .page-content{
+        align-items: flex-start;
+        padding-top: 16px;
+    }
 }

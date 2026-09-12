@@ -53,7 +53,7 @@ function App() {
             </header>
 
 
-            <main className="topic">
+            <main className="page-content">
 
                 {topic === null && (
                     <TopicSelector onSelect={setTopic} />

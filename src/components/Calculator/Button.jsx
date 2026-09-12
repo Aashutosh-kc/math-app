@@ -1,5 +1,13 @@
 import './Button.css'
 import * as math from "mathjs"
+
+function getButtonType(value){
+    if (value === "AC" || value === "DEL") return "action";
+    if (value === "+" || value === "-" || value === "*" || value === "/" || value === "%") return "operator";
+    if (value === "=") return "equal";
+    return "number";
+}
+
 export default function CalcButton({value,setDisplay,appendToDisplay}){
 
     function calcEvaluate(expr){
@@ -11,9 +19,10 @@ export default function CalcButton({value,setDisplay,appendToDisplay}){
         }
     }
 
-    
+    const buttonType = getButtonType(value);
+
     return(
-        <button className="basic-btn" 
+        <button className={`basic-btn ${buttonType}`}
             onClick={()=> {
                 if (value === "="){
                     setDisplay(prev => calcEvaluate(prev))
