@@ -1,262 +1,204 @@
-import { useState,useRef,useEffect, useMemo } from "react"
+import { useState, useRef, useEffect, useMemo } from "react"
 import * as math from "mathjs"
-import './PolarCoordinates.css';
-import { Table,ChartSpline,ChartPie, PieChart } from 'lucide-react';
+import './PolarCoordinates.css'
+import { Table, ChartSpline, PieChart } from 'lucide-react'
+
+const ANGLES = [0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360]
+const toRad = deg => (Math.PI / 180) * deg
+
+const TRY_EXAMPLES = [
+    { label: "1 + cos(θ)", value: "1 + cos(theta)" },
+    { label: "2 sin(3θ)", value: "2 * sin(3*theta)" },
+    { label: "circle", value: "5" },
+]
+
+// evaluates r for a given theta; returns null if invalid, empty, or non-numeric
+const safeEval = (expr, theta) => {
+    try {
+        const r = math.evaluate(expr, { theta })
+        return typeof r === "number" ? r : null
+    } catch {
+        return null
+    }
+}
+
 export default function PolarCoordinates() {
+    const [input, setInput] = useState("")
+    const [plottedEquation, setPlottedEquation] = useState("")
+    const [symmetry, setSymmetry] = useState(null)
+    const canvasRef = useRef(null)
 
-    const [input,setInput] = useState("");
-    const canvasRef = useRef(null);
-    const [showResult, setShowResult] = useState(false);
-    const [symmetry, setSymmetry] = useState(null);
-    const [plottedEquation, setPlottedEquation] = useState("");
+    // recompute curve points only when a new equation is plotted
+    const points = useMemo(() => {
+        const pts = []
+        for (let theta = 0; theta <= 2 * Math.PI; theta += 0.01) {
+            const r = safeEval(plottedEquation, theta)
+            if (r === null) return []
+            pts.push({ r, theta })
+        }
+        return pts
+    }, [plottedEquation])
 
-function plotGrid(scale,maxR){
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    const cx = canvas.width / 2;
-    const cy = canvas.height /2;
-    const lineLength = maxR * scale;
-
-    ctx.fillStyle = "#111111";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    
-    ctx.strokeStyle = "#333";
-    ctx.lineWidth = 1;
-
-    for(let r = 1; r <= maxR; r += 1){
-        ctx.beginPath();
-        ctx.arc(cx,cy,r*scale,0,2*Math.PI);
-        ctx.stroke();  
-    }
-    const step = Math.max(1, Math.ceil(maxR/8));
-    for (let r = step; r <= maxR ; r+= step ){
-        ctx.fillStyle = "#333";
-        ctx.font = "12px sans-serif";
-        ctx.fillText(r.toString(),cx + r * scale + 5, cy -5);
-    }
-    
-
-    //x-axis
-    ctx.beginPath();
-    ctx.strokeStyle= "#fff";
-    ctx.moveTo(0,cy);
-    ctx.lineTo(canvas.width,cy);
-    ctx.stroke();
-
-    //y-axis
-    ctx.beginPath();
-    ctx.strokeStyle = "#fff";
-    ctx.moveTo(cx,0);
-    ctx.lineTo(cx,canvas.width);
-    ctx.stroke();
-
-
-    // angle lines
-    const angles = [0,30,45,60,90,120,135,150];
-    ctx.strokeStyle = "#333"
-    ctx.lineWidth = 1
-    angles.forEach((deg)=>{
-        const rad = Math.PI /180 * deg;
-        //for 30,60,...
-        ctx.beginPath();
-        ctx.moveTo(cx,cy);
-        ctx.lineTo(cx + lineLength* Math.cos(rad), cy - lineLength * Math.sin(rad));
-        ctx.stroke();
-       //for 210,240..
-       ctx.beginPath();
-        ctx.moveTo(cx,cy);
-        ctx.lineTo(cx - lineLength * Math.cos(rad), cy + lineLength * Math.sin(rad));
-        ctx.stroke();
+    // live preview table, updates as the user types
+    const tableData = ANGLES.map(angle => {
+        const r = safeEval(input, toRad(angle))
+        return { angle, r: r === null ? "error" : r.toFixed(3) }
     })
-}
 
-useEffect (() =>
-    plotGrid(50,5)
-    ,[]);
+    function drawGrid(scale, maxR) {
+        const ctx = canvasRef.current.getContext("2d")
+        const cx = 250, cy = 250, len = maxR * scale
 
-    const allpoints = useMemo(()=>{
-        const points = [];
-    for (let theta= 0; theta <= 2 * Math.PI; theta += 0.01){
-        try{
-        const r = math.evaluate(plottedEquation,{theta: theta});
-        points.push({r,theta});
+        ctx.fillStyle = "#111"
+        ctx.fillRect(0, 0, 500, 500)
+
+        // concentric reference circles
+        ctx.strokeStyle = "#333"
+        for (let r = 1; r <= maxR; r++) {
+            ctx.beginPath()
+            ctx.arc(cx, cy, r * scale, 0, 2 * Math.PI)
+            ctx.stroke()
         }
-        catch{
-            return [];
+
+        // radius number labels
+        const step = Math.max(1, Math.ceil(maxR / 8))
+        ctx.fillStyle = "#333"
+        ctx.font = "12px sans-serif"
+        for (let r = step; r <= maxR; r += step) {
+            ctx.fillText(r.toString(), cx + r * scale + 5, cy - 5)
         }
+
+        // axes
+        ctx.strokeStyle = "#fff"
+        ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(500, cy); ctx.stroke()
+        ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, 500); ctx.stroke()
+
+        // angle guide lines
+        ctx.strokeStyle = "#333"
+        ;[0, 30, 45, 60, 90, 120, 135, 150].forEach(deg => {
+            const rad = toRad(deg)
+            ctx.beginPath()
+            ctx.moveTo(cx, cy)
+            ctx.lineTo(cx + len * Math.cos(rad), cy - len * Math.sin(rad))
+            ctx.stroke()
+            ctx.beginPath()
+            ctx.moveTo(cx, cy)
+            ctx.lineTo(cx - len * Math.cos(rad), cy + len * Math.sin(rad))
+            ctx.stroke()
+        })
     }
-    return points;
-    },[plottedEquation])
 
-    useEffect(()=>{
-        if (plottedEquation === "") return;
+    // initial empty grid on first load
+    useEffect(() => drawGrid(50, 5), [])
 
-        const points = allpoints;
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext("2d");
-        const cx = canvas.width / 2;
-        const cy = canvas.height / 2;
+    // redraw grid + curve whenever memoized points change
+    useEffect(() => {
+        if (!points.length) return
+        const cx = 250, cy = 250
+        const maxR = Math.ceil(Math.max(...points.map(p => Math.abs(p.r))))
+        const scale = 220 / maxR
 
-        const rawMaxR = Math.max(...points.map((p) => Math.abs(p.r)));
-        const maxR = Math.ceil(rawMaxR);
-        const scale = 220 / maxR;
+        drawGrid(scale, maxR)
 
-        plotGrid(scale, maxR);
+        const ctx = canvasRef.current.getContext("2d")
+        ctx.strokeStyle = "#FF6B2B"
+        ctx.beginPath()
+        points.forEach(({ r, theta }, i) => {
+            const x = cx + r * Math.cos(theta) * scale
+            const y = cy - r * Math.sin(theta) * scale
+            i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
+        })
+        ctx.stroke()
+    }, [points])
 
-        ctx.strokeStyle = "#FF6B2B";
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        points.forEach(({ r, theta }, index) => {
-            const x = cx + r * Math.cos(theta) * scale;
-            const y = cy - r * Math.sin(theta) * scale;
-            if (index === 0) {
-                ctx.moveTo(x, y);
-            } else {
-                ctx.lineTo(x, y);
-            }
-        });
-        ctx.stroke();
-        setShowResult(true);
-    },[allpoints])
-
-function torad(deg){
-    const rad = Math.PI/180 * deg;
-    return rad;
-}
-
-const majorAngles = [
-    0,30,45,60,90,
-    120,135,150,180,
-    210,225,240,270,
-    300,315,330,360
-];
-
-const tableData = majorAngles.map((angle) => {
-    try{
-    const r = math.evaluate(input,{theta: torad(angle)});
-    return {
-        angle,
-        r: r.toFixed(3)
-    }}
-    catch{
+    function checkSymmetry() {
+        const test = offset => ANGLES.every(a => {
+            const r1 = safeEval(input, toRad(a))
+            const r2 = safeEval(input, toRad(offset(a)))
+            return r1 !== null && r2 !== null && Math.abs(r1 - r2) < 0.01
+        })
         return {
-            angle,
-            r: "error",
+            xSymmetry: test(a => 360 - a),
+            ySymmetry: test(a => 180 - a),
+            poleSymmetry: test(a => 180 + a),
         }
     }
-});
 
-function plotCurve(){
-    if (input === "")
-        return;
-    setSymmetry(checkSymmetry());
-    setPlottedEquation(input);
-}
-function checkSymmetry(){
-    //for symmetry about x-axis 
-    const xSymmetry = majorAngles.every((angle) => {
-        try{
-            const r1 = math.evaluate(input, {theta: torad(angle)})
-            const r2 = math.evaluate(input, {theta: torad(360 - angle)})
-            return Math.abs(r1 - r2) < 0.01;
-        }
-        catch{
-            return false;
-        }
-    });
-    //for symmetry about y-axis 
-    const ySymmetry = majorAngles.every((angle) => {
-        try{
-            const r1 = math.evaluate(input, {theta: torad(angle)})
-            const r2 = math.evaluate(input, {theta: torad(180 - angle)})
-            return Math.abs(r1 - r2) < 0.01;
-        }
-        catch{
-            return false;
-        }
-    })
-    //for symmetry about pole
-    const poleSymmetry = majorAngles.every((angle) => {
-        try{
-            const r1 = math.evaluate(input, {theta: torad(angle)})
-            const r2 = math.evaluate(input, {theta: torad(180 + angle)})
-            return Math.abs(r1 - r2) < 0.01;
-        }
-        catch{
-            return false;
-        }
-    })
-    return {xSymmetry,ySymmetry,poleSymmetry};
-    
-}
-    
+    function plotCurve() {
+        if (!input) return
+        setSymmetry(checkSymmetry())
+        setPlottedEquation(input)
+    }
+
     return (
-        <div className = "topic">
+        <div className="topic">
             <h1>Polar Coordinates</h1>
-                <p className="instructions">Enter your function (use theta for θ) : </p>
-                <div className="user-input">
-                <input type="text" 
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                    if(e.key === "Enter"){
-                         plotCurve();
-                         console.log("Enter pressed");
-                    }
-                }}
-                placeholder =" e.g. 1 + cos(theta)"
-                value ={input}
+            <p className="instructions">Enter your function (use theta for θ):</p>
+
+            <div className="search-bar">
+                <span className="prefix">r =</span>
+                <input
+                    type="text"
+                    value={input}
+                    placeholder="1 + cos(theta)"
+                    onChange={e => setInput(e.target.value)}
+                    onKeyDown={e => e.key === "Enter" && plotCurve()}
                 />
-                <button className = "plot-button" onClick={() => plotCurve()}>Plot</button>
+                <button className="plot-button" onClick={plotCurve}>Plot curve</button>
             </div>
+
+            <div className="try-row">
+                <span className="try-label">Try:</span>
+                {TRY_EXAMPLES.map(ex => (
+                    <button key={ex.label} className="try-chip" onClick={() => setInput(ex.value)}>
+                        {ex.label}
+                    </button>
+                ))}
+            </div>
+
             <div className="data">
-            {showResult && 
-            <>
-            
-                <div className="table-card">
-                <div className="table-title">
-                    <Table size={24} color="#FFFF" strokeWidth={1.5}/>
-                    <p>r - θ Table</p>
+                <div className="graph">
+                    <div className="graph-title">
+                        <ChartSpline color="#fff" />
+                        <p>Graph</p>
+                    </div>
+                    <canvas ref={canvasRef} height={500} width={500} className="polar-canvas" />
+                    {plottedEquation && <p className="graph-equation">r = {plottedEquation}</p>}
                 </div>
-                <table className="polar-table">
-                    <thead>
-                        <tr>
-                            <th>θ (degrees)</th>
-                            <th>r</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tableData.map(({angle,r},index) => (
-                            <tr key={index}>
-                                <td>{angle}</td>
-                                <td>{r}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
 
-            <div className="desc-card">
-                <div className="desc-title"><PieChart size={24} color="#ffff"/><p className="title">Curve Analysis</p></div>
-                <p>X-axis: <span className={symmetry?.xSymmetry ? "sym-yes" : "sym-no"}>{symmetry?.xSymmetry ? "Symmetric" : "Not Symmetric"}</span></p>
-                <p>Y-axis: <span className={symmetry?.ySymmetry ? "sym-yes" : "sym-no"}>{symmetry?.ySymmetry ? "Symmetric" : "Not Symmetric"}</span></p>
-                <p>Pole: <span className={symmetry?.poleSymmetry ? "sym-yes" : "sym-no"}>{symmetry?.poleSymmetry ? "Symmetric" : "Not Symmetric"}</span></p>
-            </div>
-        
-        </>}
+                {plottedEquation && (
+                    <>
+                        <div className="table-card">
+                            <div className="table-title">
+                                <Table size={24} color="#fff" strokeWidth={1.5} />
+                                <p>r - θ Table</p>
+                            </div>
+                            <table className="polar-table">
+                                <thead><tr><th>θ (degrees)</th><th>r</th></tr></thead>
+                                <tbody>
+                                    {tableData.map(({ angle, r }) => (
+                                        <tr key={angle}><td>{angle}</td><td>{r}</td></tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
 
-<div className="graph">
-            <div className="graph-title">
-                <ChartSpline color="#fff"/>
-                <p>Graph</p>
-            </div>
-            <canvas 
-            ref={canvasRef}
-                height = {500}
-                width = {500}
-                className ="polar-canvas"
-            />
-            {plottedEquation && <p className="graph-equation">r = {plottedEquation}</p>}
-            </div>
+                        <div className="desc-card">
+                            <div className="desc-title">
+                                <PieChart size={24} color="#fff" />
+                                <p className="title">Curve Analysis</p>
+                            </div>
+                            {["xSymmetry", "ySymmetry", "poleSymmetry"].map((key, i) => (
+                                <p key={key}>
+                                    {["X-axis", "Y-axis", "Pole"][i]}:{" "}
+                                    <span className={symmetry?.[key] ? "sym-yes" : "sym-no"}>
+                                        {symmetry?.[key] ? "Symmetric" : "Not Symmetric"}
+                                    </span>
+                                </p>
+                            ))}
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     )

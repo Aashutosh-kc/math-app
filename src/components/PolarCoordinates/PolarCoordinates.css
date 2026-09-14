@@ -13,43 +13,85 @@
     padding: 8px 12px;
 }
 
-.topic .user-input{
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    align-items: center;
-}
-
 .topic .instructions{
     font-size: 18px;
 }
 
-.topic .user-input input{
-    flex: 1;
-    padding: 8px 12px;
-    border: 1px solid var(--accent);
-    border-radius: 8px;
-    font-size: 16px;
+/* search bar */
+.search-bar{
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    max-width: 600px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
-.topic .user-input input:focus{
+.search-bar .prefix{
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font-weight: 700;
+    color: var(--accent);
+    background: #fafafa;
+    border-right: 1px solid var(--border);
+}
+
+.search-bar input{
+    flex: 1;
+    border: none;
+    padding: 14px 12px;
+    font-size: 16px;
     outline: none;
+}
+
+.search-bar .plot-button{
+    border: none;
+    padding: 0 24px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+.search-bar .plot-button:hover{
+    background: var(--accent-hover);
+}
+
+/* try chips */
+.try-row{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    max-width: 600px;
+}
+
+.try-label{
+    font-size: 13px;
+    color: var(--subtext);
+    margin-right: 4px;
+}
+
+.try-chip{
+    border: 1px solid var(--border);
+    background: #fff;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--text);
+}
+.try-chip:hover{
+    background: var(--accent);
+    color: #fff;
     border-color: var(--accent);
 }
 
-.plot-button{
-    padding: 8px 12px;
-    border: 1px solid var(--accent);
-    border-radius: 8px;
-    cursor: pointer;
-    color: var(--surface);
-    background-color: var(--accent);
-}
-
-.plot-button:hover{
-    background-color: var(--accent-hover);
-}
-
+/* data layout */
 .data{
     display: flex;
     flex-direction: row;
@@ -57,6 +99,7 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    margin-top: 16px;
 }
 
 .table-card{
@@ -165,6 +208,7 @@
 
 .sym-yes{ color: #4caf50; font-weight: bold; }
 .sym-no{ color: #f44336; font-weight: bold; }
+
 .polar-canvas{
     border: 1px solid var(--accent);
     display: block;
