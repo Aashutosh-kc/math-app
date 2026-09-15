@@ -15,10 +15,6 @@ A visual math tools website built for engineering students.
         <td align="center"><img src="https://mathjs.org/css/img/mathjs.svg" height="48" alt="mathjs" />
         <br><sub>mathjs</sub>
         </td>
-        <td align="center" >
-        <img src="https://images.plot.ly/logo/new-branding/plotly-logomark.png" alt="plotly" heigtht="48" width="48"n/>
-        <br><sub>plotlyjs</sub>
-        </td>
     </tr>
 </table>
 
@@ -27,15 +23,20 @@ A visual math tools website built for engineering students.
 ### Polar Coordinates
 - Plot any r = f(θ) curve instantly
 - r-θ table at all major angles (0°, 30°, 45°...360°)
-- Auto-scaled polar grid with angle line
+- Auto-scaled polar grid with angle lines
 - Symmetry check about axis and pole
+- Quick-start "try" presets to plot common curves in one click
+
+### Calculator
+- Basic arithmetic with parentheses and percentage support
+- Clear (AC) and single-character delete (DEL)
 
 ## Planned Features
 ### Partial Derivatives
 - Partial derivative visualizer (3D surface plotter)
 
 ### Polar Coordinates
-- Calcuate the total area of the given curve.
+- Calculate the total area of the given curve
 
 # Run it locally
 1. Clone the repo 
@@ -61,6 +62,7 @@ http://localhost:5173/
 - [x] Polar graph plotting
 - [x] r-θ table generation
 - [x] Symmetry detection
+- [x] Basic calculator
 - [ ] Polar area calculator
 - [ ] Partial derivative visualizer
 - [ ] Tangent plane calculator
