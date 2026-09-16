@@ -1,7 +1,7 @@
 # Locus 
 A visual math tools website built for engineering students.
 
-![Preview](./src/assets/preview1.png)
+![Preview](./src/assets/menu_preview.png)
 
 ## Live Demo
 [View Live](https://locus-wine.vercel.app/)
