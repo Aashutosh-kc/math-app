@@ -1,7 +1,7 @@
 import './TopicSelector.css'
 import { SquareFunction, Box, Calculator, ArrowUpRight } from 'lucide-react';
-
-function TopicSelector({ onSelect }) {
+import {Link} from "react-router-dom"
+function TopicSelector({  }) {
     const topics = [
         {
             title: "Polar Coordinates",
@@ -28,8 +28,8 @@ function TopicSelector({ onSelect }) {
     <h2>Select your topic</h2>
     <div className="card-grid">
         {topics.map((topic, index) => (
-            <div key={index} className={`card ${topic.status === "coming-soon" ? "coming-soon" : ""}`}
-                onClick={() => { topic.status !== "coming-soon" && onSelect(topic.title) }}>
+            <Link to={`/topics/${topic.title}`}>
+            <div key={index} className={`card ${topic.status === "coming-soon" ? "coming-soon" : ""}`}>
                 <div className="card-preview">
                     <topic.icon size={40} strokeWidth={1.8} />
                 </div>
@@ -43,7 +43,7 @@ function TopicSelector({ onSelect }) {
                     </span>
                 </div>
             </div>
-        ))}
+        </Link>))}
     </div>
     </div>
     )
