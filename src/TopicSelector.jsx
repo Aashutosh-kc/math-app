@@ -28,8 +28,8 @@ function TopicSelector({  }) {
     <h2>Select your topic</h2>
     <div className="card-grid">
         {topics.map((topic, index) => (
-            <Link to={`/topics/${topic.title}`}>
-            <div key={index} className={`card ${topic.status === "coming-soon" ? "coming-soon" : ""}`}>
+            <Link key={index} to={`/topics/${topic.title}`}>
+            <div className={`card ${topic.status === "coming-soon" ? "coming-soon" : ""}`}>
                 <div className="card-preview">
                     <topic.icon size={40} strokeWidth={1.8} />
                 </div>

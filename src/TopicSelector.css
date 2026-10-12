@@ -15,12 +15,15 @@
     flex-direction: row;
     gap: 20px;
     width: 100%;
+    align-items: stretch;
 }
 
 .card-grid a,
 .brand {
+    display: flex;
     text-decoration: none;
     color: inherit;
+    flex: 1
 }
 
 .card{
@@ -44,7 +47,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100px;
+    height: 125px;
     background: linear-gradient(160deg, #fff3ec, #ffe0d1);
     color: var(--accent);
 }
@@ -52,6 +55,7 @@
 .card-body{
     padding: 16px 20px 20px;
     text-align: left;
+    flex: 1;
 }
 
 .card-index{
