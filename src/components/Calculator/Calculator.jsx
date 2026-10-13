@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CalcButton from './Button'
 import './Calculator.css'
 import { Calculator as CalculatorIcon } from "lucide-react";
@@ -7,7 +7,19 @@ import * as math from "mathjs"
 export default function SimpCalculator(){
 
     const [display,setDisplay] = useState('');
-    const [history,setHistory] = useState([]);
+    const [history,setHistory] = useState(()=>{
+        try{
+        const saved = localStorage.getItem('calculator-history');
+        return saved?JSON.parse(saved):[];
+        }
+        catch{
+            return [];
+        }
+    });
+
+    useEffect(()=>{
+        localStorage.setItem('calculator-history',JSON.stringify(history));
+    },[history])
 
     function appendToDisplay(newValue){
         setDisplay((prev)=>{
