@@ -11,10 +11,11 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.15);
     transition: transform 0.08s ease, opacity 0.15s ease;
 }
-button:hover{
+.basic-btn:hover {
     opacity: 0.85;
 }
-button:active{
+
+.basic-btn:active {
     transform: scale(0.93);
 }
 .basic-btn.operator{
@@ -31,4 +32,7 @@ button:active{
     background-color: #1a1a1a;
     color: #fff;
     font-size: 14px;
+}
+.basic-btn.action:hover {
+    background-color: #333;
 }
