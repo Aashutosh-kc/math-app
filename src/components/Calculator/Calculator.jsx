@@ -74,7 +74,7 @@ export default function SimpCalculator(){
             <h3>History</h3>
             {history.length === 0 && <p className="history-empty">No history yet</p>}
             {history.map((item, index) => (
-                <div className="history-entry" key={index}>
+                <div className="history-entry" key={index} onClick={()=>setDisplay(item.expression)}>
                     <span className="history-expression">{item.expression} =</span>
                     <span className="history-result">{item.result}</span>
                 </div>

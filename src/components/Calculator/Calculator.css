@@ -106,8 +106,15 @@
 .history-entry{
     display: flex;
     flex-direction: column;
+    padding-left: 4px;
     padding-bottom: 8px;
     border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    border-radius: 8px;
+}
+.history-entry:hover{
+    background-color: var(--accent);
+    color: var(--surface);
 }
 .history-expression{
     color: var(--subtext);
