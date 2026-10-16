@@ -28,8 +28,10 @@ A visual math tools website built for engineering students.
 - Quick-start "try" presets to plot common curves in one click
 
 ### Calculator
-- Basic arithmetic with parentheses and percentage support
+- Basic arithmetic with parentheses
 - Clear (AC) and single-character delete (DEL)
+- Calculation history in a side panel, saved in the browser between visits
+- Click a history entry to reuse its result
 
 ## Planned Features
 ### Partial Derivatives
@@ -63,6 +65,7 @@ http://localhost:5173/
 - [x] r-θ table generation
 - [x] Symmetry detection
 - [x] Basic calculator
+- [x] Calculator history
 - [ ] Polar area calculator
 - [ ] Partial derivative visualizer
 - [ ] Tangent plane calculator
